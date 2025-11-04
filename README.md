@@ -1,4 +1,1 @@
 # NLP_II_Practica1
-
-
-CHUPAMELA MUCHO POR FAVOR
