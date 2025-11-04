@@ -44,6 +44,3 @@ class Dataset_Downloader:
 		df = df.drop(columns=['label'])
 		df_train, df_test = train_test_split(df, test_size=0.2, stratify=df['genre'])
 		return df_train, df_test
-
-d = Dataset_Downloader()
-d()
