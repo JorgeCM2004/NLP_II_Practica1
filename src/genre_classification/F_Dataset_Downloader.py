@@ -40,8 +40,9 @@ class Dataset_Downloader:
 
 	def _download_imdb_movie_genres(self):
 		dataset_dict = load_dataset("adrienheymans/imdb-movie-genres")
-		df = pd.concat([dataset_dict['train'].to_pandas(), dataset_dict['test'].to_pandas()], ignore_index=True)
-		df_train, df_test = train_test_split(df, test_size=0.2, stratify=df['genres'])
+		df: pd.DataFrame = pd.concat([dataset_dict['train'].to_pandas(), dataset_dict['test'].to_pandas()], ignore_index=True)
+		df = df.drop(columns=['label'])
+		df_train, df_test = train_test_split(df, test_size=0.2, stratify=df['genre'])
 		return df_train, df_test
 
 d = Dataset_Downloader()
