@@ -1,19 +1,18 @@
 import numpy as np
-
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from scipy.sparse import spmatrix 
-
-
 import spacy
 import re
 import warnings
 from spacy.util import WN_EXTRA_FEATURES
 from typing import Literal
 
-class Preprocess_Data():
 
-    def __inti__(self):
-        pass
+'''
+añadir n-gramas y limite del vocabulario
+
+'''
+
+class Preprocess_Data():
     
     def data_representation(self, data, weight_type: Literal['tf-idf', 'binary', 'frequency'] = 'tf-idf'):
 
