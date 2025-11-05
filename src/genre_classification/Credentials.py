@@ -12,14 +12,14 @@ def kagglehub_credentials():
 
 	username, key = None, None
 
-	# path = Path.home() / ".kaggle" / "kaggle.json"
-	# if path.exists():
-	# 	with open(path, "r") as f:
-	# 		creds = json.load(f)
+	path = Path.home() / ".kaggle" / "kaggle.json"
+	if path.exists():
+		with open(path, "r") as f:
+			creds = json.load(f)
 
-	# 	if "username" in creds and "key" in creds:
-	# 		username = creds["username"]
-	# 		key = creds["key"]
+		if "username" in creds and "key" in creds:
+			username = creds["username"]
+			key = creds["key"]
 
 	if not username or not key:
 		root = tk.Tk()
