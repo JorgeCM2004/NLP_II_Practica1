@@ -30,11 +30,11 @@ class Compute_Metrics():
             self.labels = sorted(list(labels))
         
     
-    def __call__(self, *args, **kwds) -> dict: 
-        self.compute_all()
+    def __call__(self, *args, **kwds): 
+        return self.compute_all()
     
     
-    def compute_all(self) -> dict:
+    def compute_all(self):
         metrics = {
             "accuracy": self.accuracy(),
             "macro_f1": self.macro_f1(),
@@ -44,7 +44,9 @@ class Compute_Metrics():
         return metrics
     
     def accuracy(self) -> float:
-        return accuracy_score(self.y_true, self.y_pred)
+        acc = accuracy_score(self.y_true, self.y_pred)
+        print(acc)
+        return acc
     
     def macro_f1(self)-> float:
         return f1_score(self.y_true, self.y_pred, labels=self.labels, average='macro', zero_division=0)
@@ -69,19 +71,23 @@ class Compute_Metrics():
     
     
     
+'''
+MAIN DE PRUEBA
+
 etiquetas_posibles = ["Fake", "Real", "Satire"]
 y_verdadero = ["Real", "Fake", "Real", "Satire", "Fake", "Real", "Satire", "Real", "Fake", "Fake"]
 y_predicho =  ["Real", "Fake", "Real", "Satire", "Real",   "Fake", "Satire", "Real", "Fake", "Satire"]
-
 
 
 metricas_calc = Compute_Metrics(y_pred=y_predicho, y_true=y_verdadero, labels=etiquetas_posibles)
         
 resultados = metricas_calc()
 
+print(metricas_calc)
+
 # 3. Imprimir resultados
-print(f"\nAccuracy: {resultados['accuracy']:.4f}")
-print(f"Macro-F1: {resultados['macro_f1']:.4f}")
+print(f"\nAccuracy: {resultados['accuracy']}")
+print(f"Macro-F1: {resultados['macro_f1']}")
 
 print("\nF1 por Clase:")
 print(pd.Series(resultados['f1_per_class']).to_string())
@@ -95,3 +101,4 @@ reporte_dict = metricas_calc.full_report(as_dict=True)
 print(pd.DataFrame(reporte_dict).transpose().to_string())
 
 
+'''
