@@ -19,6 +19,10 @@ class HuggingFace_Error(Exception):
 class Dataset_Downloader:
 
 	def __init__(self):
+		self.label_map = {
+			'sports': 'sport',
+			'scifi': 'sci-fi'
+		}
 		path = Path(__file__).resolve()
 		self.dataset_folder_path = None
 		while True:
@@ -79,6 +83,11 @@ class Dataset_Downloader:
 		df = dataset_dict['train'].to_pandas()
 
 		df = df.rename(columns={'Description': 'text', 'Genre': 'genre'})
+		df = df[['title', 'text', 'genre']]
+
+		df["genre"] = df["genre"].str.lower()
+		df["genre"] = df["genre"].replace(self.label_map)
+		df.drop(df[df['text'].str.contains("See full ", na=False)].index, inplace=True)
 
 		df_train, df_test = train_test_split(df, test_size=0.2, stratify=df['genre'], random_state=SEED) if SEED else train_test_split(df, test_size=0.2, stratify=df['genre'])
 		return df_train, df_test
@@ -89,7 +98,7 @@ class Dataset_Downloader:
 		except Exception:
 			raise HuggingFace_Error()
 
-		df = pd.concat([
+		df: pd.DataFrame = pd.concat([
 			dataset_dict['train'].to_pandas(),
 			dataset_dict["validation"].to_pandas(),
 			dataset_dict['test'].to_pandas()
@@ -98,6 +107,10 @@ class Dataset_Downloader:
 		df = df.drop(columns=['expanded-genres', "rating"])
 		df = df.rename(columns={"movie title - year": "title", "description": "text"})
 		df = df[['title', 'text', 'genre']]
+
+		df["genre"] = df["genre"].str.lower()
+		df["genre"] = df["genre"].replace(self.label_map)
+		df.drop(df[df['text'].str.contains("See full ", na=False)].index, inplace=True)
 
 		df_train, df_test = train_test_split(df, test_size=0.2, stratify=df['genre'], random_state=SEED) if SEED else train_test_split(df, test_size=0.2, stratify=df['genre'])
 		return df_train, df_test
