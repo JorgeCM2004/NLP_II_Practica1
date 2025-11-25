@@ -67,38 +67,3 @@ class Compute_Metrics():
 
         return classification_report(self.y_true, self.y_pred, labels=self.labels, output_dict=as_dict, zero_division=0)
     
-    
-    
-    
-    
-'''
-MAIN DE PRUEBA
-
-etiquetas_posibles = ["Fake", "Real", "Satire"]
-y_verdadero = ["Real", "Fake", "Real", "Satire", "Fake", "Real", "Satire", "Real", "Fake", "Fake"]
-y_predicho =  ["Real", "Fake", "Real", "Satire", "Real",   "Fake", "Satire", "Real", "Fake", "Satire"]
-
-
-metricas_calc = Compute_Metrics(y_pred=y_predicho, y_true=y_verdadero, labels=etiquetas_posibles)
-        
-resultados = metricas_calc()
-
-print(metricas_calc)
-
-# 3. Imprimir resultados
-print(f"\nAccuracy: {resultados['accuracy']}")
-print(f"Macro-F1: {resultados['macro_f1']}")
-
-print("\nF1 por Clase:")
-print(pd.Series(resultados['f1_per_class']).to_string())
-
-print("\nMatriz de Confusión:")
-print(resultados['confusion_matrix'])
-
-# 4. (Extra) Obtener el reporte completo
-print("\nReporte Completo (Extra):")
-reporte_dict = metricas_calc.full_report(as_dict=True)
-print(pd.DataFrame(reporte_dict).transpose().to_string())
-
-
-'''

@@ -5,19 +5,19 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 from .F_Compute_Metrics import Compute_Metrics
-#from .F_Preprocess_Data import Preprocess_Data
-from .F_Preprocess_2 import Preprocess_Data_2
+from .F_Preprocess_Data import Preprocess_Data
+#from .F_Preprocess_2 import Preprocess_Data_2
 from .config import SEED
 
 from typing import Literal
 
-class Basic_Models(Preprocess_Data_2, Compute_Metrics):
+class Basic_Models(Preprocess_Data, Compute_Metrics):
 
     def __init__(self, model_type: Literal['Random_Forest', 'Naive_Bayes', 'LogReg', 'Linear_SVM']):
 
         self.model_type = model_type
         self.model = self._select_model()
-        self.prep = Preprocess_Data_2()
+        self.prep = Preprocess_Data()
         self.objectPrepro = None
 
 
