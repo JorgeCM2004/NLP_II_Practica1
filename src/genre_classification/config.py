@@ -23,3 +23,41 @@ SEED = int(os.getenv("SEED", "42"))
 KAGGLEHUB_USERNAME = os.getenv("KAGGLEHUB_USERNAME", None)
 KAGGLEHUB_KEY = os.getenv("KAGGLEHUB_KEY", None)
 HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN", None)
+
+LABELS_MAP = {
+            'action': 'action_adventure',
+            'adventure': 'action_adventure',
+            'war': 'action_adventure',
+            'western': 'action_adventure',
+            
+            'thriller': 'suspense_crime',
+            'crime': 'suspense_crime',
+            'mystery': 'suspense_crime',
+            'film-noir': 'suspense_crime',
+            
+            'drama': 'drama_romance',
+            'romance': 'drama_romance',
+            'biography': 'drama_romance',
+            'history': 'drama_romance',
+            'short': 'drama_romance',
+            'adult': 'drama_romance',
+            
+            'sci-fi': 'scifi_horror_fantasy',
+            'scifi': 'scifi_horror_fantasy',
+            'fantasy': 'scifi_horror_fantasy',
+            'horror': 'scifi_horror_fantasy',
+            
+            'comedy': 'comedy_family',
+            'family': 'comedy_family',
+            'animation': 'comedy_family',
+            'musical': 'comedy_family',
+            'music': 'comedy_family',
+            
+            'documentary': 'documentary_factual',
+            'news': 'documentary_factual',
+            'reality-tv': 'documentary_factual',
+            'talk-show': 'documentary_factual',
+            'game-show': 'documentary_factual',
+            'sport': 'documentary_factual',
+            'sports': 'documentary_factual'
+        }

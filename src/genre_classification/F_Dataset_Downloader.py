@@ -6,7 +6,7 @@ import sys
 import os
 import shutil
 
-from .config import MAIN_NAME, SEED
+from .config import MAIN_NAME, SEED, LABELS_MAP
 from .Credentials import kagglehub_credentials, huggingface_credentials
 
 class Kaggle_Error(Exception):
@@ -19,10 +19,7 @@ class HuggingFace_Error(Exception):
 class Dataset_Downloader:
 
 	def __init__(self):
-		self.label_map = {
-			'sports': 'sport',
-			'scifi': 'sci-fi'
-		}
+		self.label_map = LABELS_MAP # Mapa de etiquetas creado en el archivo de configuracion
 		path = Path(__file__).resolve()
 		self.dataset_folder_path = None
 		while True:
@@ -82,7 +79,9 @@ class Dataset_Downloader:
 
 		df = dataset_dict['train'].to_pandas()
 
-		df = df.rename(columns={'Description': 'text', 'Genre': 'genre'})
+		df = df.rename(columns={'Title': 'title', 'Description': 'text', 'Genre': 'genre'})
+		df['text'] = df['title'].astype(str) + ". " + df['text'].astype(str) # Añadimos el titulo al texto
+		
 		df = df[['title', 'text', 'genre']]
 
 		df["genre"] = df["genre"].str.lower()
@@ -106,6 +105,9 @@ class Dataset_Downloader:
 
 		df = df.drop(columns=['expanded-genres', "rating"])
 		df = df.rename(columns={"movie title - year": "title", "description": "text"})
+
+		df['text'] = df['title'].astype(str) + ". " + df['text'].astype(str) # Añadimos el titulo al texto
+		
 		df = df[['title', 'text', 'genre']]
 
 		df["genre"] = df["genre"].str.lower()
