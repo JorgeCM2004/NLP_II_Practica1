@@ -64,6 +64,5 @@ class Compute_Metrics():
     
     
     def full_report(self, as_dict: bool = True):
-
         return classification_report(self.y_true, self.y_pred, labels=self.labels, output_dict=as_dict, zero_division=0)
     

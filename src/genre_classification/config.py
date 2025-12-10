@@ -24,6 +24,7 @@ KAGGLEHUB_USERNAME = os.getenv("KAGGLEHUB_USERNAME", None)
 KAGGLEHUB_KEY = os.getenv("KAGGLEHUB_KEY", None)
 HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN", None)
 
+# Diccionario de mapeo de etiquetas para armonizarlas
 LABELS_MAP = {
             'action': 'action_adventure',
             'adventure': 'action_adventure',

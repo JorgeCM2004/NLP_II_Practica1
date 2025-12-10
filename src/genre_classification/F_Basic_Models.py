@@ -93,7 +93,7 @@ class Basic_Models(Preprocess_Data, Compute_Metrics):
         
         if isinstance(package, dict) and 'model' in package:
             self.model = package['model']
-            self.objectPrepro = package.get('vectorizer', None) # Recuperamos el vectorizador si existe
+            self.objectPrepro = package.get('vectorizer', None)
         else:
             self.model = package
             

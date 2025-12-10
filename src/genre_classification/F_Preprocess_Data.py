@@ -10,12 +10,12 @@ from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.model_selection import train_test_split
 
-# Fallback por si no tienes el archivo config
 try:
     from .config import SEED
 except ImportError:
     SEED = 42
 
+# Clase que se encarga de la preprocesación de los datos, por defecto usaremos NLTK porque es el mas rapido y tienen casi los mismos resultados que SpaCy
 class Preprocess_Data:
     def __init__(self, library: Literal['NLTK', 'Spacy', 'TRANSFORMER'] = 'NLTK'):
         self.library = library.upper()
@@ -105,7 +105,7 @@ class Preprocess_Data:
         return processed_data
 
     def data_representation(self, data: List[str], weight_type: Literal['tf-idf', 'binary', 'frequency'] = 'tf-idf'):
-
+        # Tras probar varias configuraciones, esta es la que mejor funciona
         vectorizer_args = {
             'stop_words': 'english',
             'ngram_range': (1, 2),

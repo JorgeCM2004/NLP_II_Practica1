@@ -11,7 +11,7 @@ import os
 
 class Pretrained:
 
-    def __init__(self, model_type: Literal["deberta-v3-large"], labels: List[str]):
+    def __init__(self, labels: List[str], model_type: Literal["deberta-v3-large", "roberta-base"] = "roberta-base"):
         self.model_type = model_type
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Using device: {self.device}")
@@ -28,6 +28,8 @@ class Pretrained:
     def select_model(self):
         if self.model_type.lower() == "deberta-v3-large":
             model_name = "microsoft/deberta-v3-large"
+        elif self.model_type.lower() == "roberta-base":
+            model_name = "roberta-base"
         else:
             raise ValueError("Modelo no encontrado")
 
@@ -47,13 +49,6 @@ class Pretrained:
 
         model = AutoModelForSequenceClassification.from_pretrained(**model_kwargs)
 
-        # --- CAMBIO IMPORTANTE ---
-        # Desactivamos Gradient Checkpointing para evitar el error "backward through graph a second time".
-        # Con batch_size=4 y tu GPU, no deberías tener problemas de memoria.
-        # model.gradient_checkpointing_enable()
-        # model.config.use_cache = False
-        # -------------------------
-
         return model, tokenizer
 
     def tokenize_function(self, examples):
@@ -61,12 +56,10 @@ class Pretrained:
 
     def fit(self, train_texts: List[str], train_labels: Union[List[str], List[int]], batch_size=2, epochs=3, learning_rate=1e-5, weight_decay=0.01):
 
-        # Limpieza de memoria GPU
         self.model.zero_grad()
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
-        # Conversión automática STR -> INT
         if len(train_labels) > 0 and isinstance(train_labels[0], str):
             print("Detectadas etiquetas de texto. Convirtiendo a IDs numéricos internamente...")
             try:
@@ -101,8 +94,6 @@ class Pretrained:
 
         self.model.train()
 
-        # --- CORRECCIÓN DE SINTAXIS PARA PYTORCH 2.X+ ---
-        # Usamos 'cuda' como argumento para evitar el Warning y posibles errores en Nightly
         accumulation_steps = 4
 
         for epoch in range(epochs):
@@ -125,7 +116,6 @@ class Pretrained:
                 epoch_loss += loss.item() * accumulation_steps
                 progress_bar.set_postfix({"loss": loss.item() * accumulation_steps})
 
-            # Limpiar gradientes al final de la época
             if len(train_loader) % accumulation_steps != 0:
                 lr_scheduler.step()
                 optimizer.zero_grad()
@@ -160,10 +150,11 @@ class Pretrained:
 
         return np.array(all_predictions)
 
-    def save_model_and_tokenizer(self, path="./Models/Modelos_Transformer"):
+    def save_model_and_tokenizer(self):
+        path="./Models/Modelos_Transformer/" + self.model_type
         if not os.path.exists(path):
             os.makedirs(path)
-        model_path = os.path.join(path, self.model_type)
+        model_path = os.path.join(path, self.model_type + "_modelo")
         tokenizer_path = os.path.join(path, self.model_type + "_tokenizer")
 
         self.model.save_pretrained(model_path)
